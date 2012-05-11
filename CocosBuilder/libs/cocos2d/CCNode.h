@@ -37,6 +37,18 @@ enum {
 	kCCNodeTagInvalid = -1,
 };
 
+enum {
+    kBottomLeft = 0,
+    kBottom = 1 ,
+    kBottomRight = 2,
+    kCenterLeft = 3,
+    kCenter = 4,
+    kCenterRight = 5,
+    kTopLeft = 6,
+    kTop = 7,
+    kTopRight = 8,
+} ;
+
 @class CCCamera;
 @class CCGridBase;
 
@@ -105,6 +117,10 @@ enum {
 	// position of the node
 	CGPoint position_;
 	CGPoint	positionInPixels_;
+    
+    // for relative position
+    int refPointType_; // kBottomLeft kTopRight etc
+    CGPoint positionRelative_;
 
 	// is visible
 	BOOL visible_;
@@ -184,6 +200,11 @@ enum {
 @property(nonatomic,readwrite,assign) float scaleY;
 /** Position (x,y) of the node in points. (0,0) is the left-bottom corner. */
 @property(nonatomic,readwrite,assign) CGPoint position;
+
+/** Walzer add for android, */
+@property(nonatomic,readwrite,assign) int refPointType;
+@property(nonatomic,readwrite,assign) CGPoint positionRelative;
+
 /** Position (x,y) of the node in points. (0,0) is the left-bottom corner. */
 @property(nonatomic,readwrite,assign) CGPoint positionInPixels;
 /** A CCCamera object that lets you move the node using a gluLookAt

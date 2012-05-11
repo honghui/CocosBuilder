@@ -100,6 +100,8 @@
     NSString* class = @"CCNode";
     NSMutableDictionary* props = [NSMutableDictionary dictionary];
     [CCBWriter addPropToDict:props key:@"position" pointVal:node.position];
+    [CCBWriter addPropToDict:props key:@"refPointType" intVal:node.refPointType];
+    [CCBWriter addPropToDict:props key:@"positionRelative" pointVal:node.positionRelative];
     [CCBWriter addPropToDict:props key:@"contentSize" sizeVal:node.contentSize];
     [CCBWriter addPropToDict:props key:@"scaleX" floatVal:node.scaleX];
     [CCBWriter addPropToDict:props key:@"scaleY" floatVal:node.scaleY];

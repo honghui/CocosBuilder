@@ -96,7 +96,6 @@ enum {
     
 @private
     NSWindow *window;
-    
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -126,9 +125,12 @@ enum {
 @property (nonatomic, assign) int pMemberVarAssignmentType;
 @property (nonatomic, retain) NSString* pMemberVarAssignmentName;
 
+
+
 // Node
 @property (nonatomic, assign) float pPositionX;
 @property (nonatomic, assign) float pPositionY;
+@property (nonatomic, assign) int   pRefPointType;
 @property (nonatomic, assign) float pContentSizeW;
 @property (nonatomic, assign) float pContentSizeH;
 @property (nonatomic, assign) float pAnchorPointX;
@@ -141,6 +143,7 @@ enum {
 @property (nonatomic, assign) int pTag;
 @property (nonatomic, assign) BOOL pRelativeToAnchorpoint;
 @property (nonatomic, assign) BOOL pVisible;
+
 
 // Layer
 @property (nonatomic, assign) BOOL pTouchEnabled;

@@ -694,6 +694,7 @@
     
     [self populateProperty:@"pPositionX"];
     [self populateProperty:@"pPositionY"];
+    [self populateProperty:@"pRefPointType"];
     [self populateProperty:@"pContentSizeW"];
     [self populateProperty:@"pContentSizeH"];
     [self populateProperty:@"pAnchorPointX"];
@@ -1274,13 +1275,22 @@
         currentDocument.lastOperationType = kCCBOperationTypePosition;
     }
     
-    selectedNode.position = ccp(positionX, selectedNode.position.y);
+    // selectedNode.position = ccp(positionX, selectedNode.position.y);
+    float positionY = self.pPositionY;
+    selectedNode.position = [self calculateAbsolutePosition:ccp(positionX, positionY)
+                                               fromRefPoint:self.pRefPointType];
+    selectedNode.positionRelative = ccp(positionX, positionY);
+    
 }
 
 - (float)pPositionX
 {
     if (![self isSelectedNode]) return 0;
-    return selectedNode.position.x;
+    
+    // return selectedNode.position.x;
+    float offset = [self RefPointFromType:selectedNode.refPointType].x;
+    float retVal = selectedNode.position.x - offset;
+    return retVal;
 }
 
 - (void)setPPositionY:(float)positionY
@@ -1292,13 +1302,125 @@
         currentDocument.lastOperationType = kCCBOperationTypePosition;
     }
     
-    selectedNode.position = ccp(selectedNode.position.x, positionY);
+    // selectedNode.position = ccp(selectedNode.position.x, positionY);
+    float positionX = self.pPositionX;
+    selectedNode.position = [self calculateAbsolutePosition:ccp(positionX,positionY)
+                                               fromRefPoint:self.pRefPointType];
+    selectedNode.positionRelative = ccp(positionX, positionY);
 }
 
 - (float)pPositionY
 {
     if (![self isSelectedNode]) return 0;
-    return selectedNode.position.y;
+    //return selectedNode.position.y;
+    float offset = [self RefPointFromType:selectedNode.refPointType].y;
+    float retVal = selectedNode.position.y - offset;
+    return retVal;
+}
+
+- (void)setPRefPointType:(int)pRefPointType //setter
+{
+    if (![self isSelectedNode]) return;
+    
+    if (currentDocument.lastOperationType != kCCBOperationTypePosition)
+    {
+        [self saveUndoState];
+        currentDocument.lastOperationType = kCCBOperationTypePosition;
+    }
+    
+    NSLog(@"set positionRelativeTo from %d to %d", selectedNode.refPointType, pRefPointType);
+
+    
+    /*
+    CGPoint oldRef = [self RefPositionFromType: selectedNode.refPointType];
+    CGPoint newRef = [self RefPositionFromType:pRefPointType];
+    selectedNode.position = ccp( selectedNode.position.x + oldRef.x - newRef.y,
+                                 selectedNode.position.y + oldRef.y - newRef.x );
+    */
+    selectedNode.refPointType = pRefPointType;
+    CGPoint relativePos = [self calculateRelativePosition:selectedNode.position 
+                                             fromRefPoint:pRefPointType];
+    self.pPositionX = relativePos.x;
+    self.pPositionY = relativePos.y;
+}
+
+- (int)pRefPointType // getter
+{
+    if (![self isSelectedNode]) return 0;
+    
+    return selectedNode.refPointType;
+}
+
+
+- (CGPoint) RefPointFromType:(int)refPointType
+{
+    CGSize stageSize = [[CCBGlobals globals].cocosScene stageSize];
+    CGPoint refPoint;
+    
+    switch (refPointType)
+    {
+        case kBottomLeft:
+            refPoint.x = 0;
+            refPoint.y = 0;
+            break;
+        case kBottom:
+            refPoint.x = stageSize.width / 2;
+            refPoint.y = 0;
+            break;
+        case kBottomRight:
+            refPoint.x = stageSize.width;
+            refPoint.y = 0;
+            break;
+        case kCenterLeft:
+            refPoint.x = 0;
+            refPoint.y = stageSize.height / 2;
+            break;
+        case kCenter:
+            refPoint.x = stageSize.width / 2;
+            refPoint.y = stageSize.height / 2;
+            break;
+        case kCenterRight:
+            refPoint.x = stageSize.width;
+            refPoint.y = stageSize.height / 2;
+            break;
+        case kTopLeft:
+            refPoint.x = 0;
+            refPoint.y = stageSize.height;
+            break;
+        case kTop:
+            refPoint.x = stageSize.width / 2;
+            refPoint.y = stageSize.height;
+            break;
+        case kTopRight:
+            refPoint.x = stageSize.width;
+            refPoint.y = stageSize.height;
+            break;
+    }
+    
+    return refPoint;
+}
+
+// add for position anchor, walzer @ Mar 11
+- (CGPoint) calculateAbsolutePosition:(CGPoint)pt fromRefPoint:(int)refPointType
+{
+    CGPoint absolutePos;
+    CGPoint refPt = [self RefPointFromType:refPointType];
+    
+    absolutePos.x = pt.x + refPt.x;
+    absolutePos.y = pt.y + refPt.y;
+    
+    return absolutePos;
+}
+
+- (CGPoint) calculateRelativePosition:(CGPoint)pt fromRefPoint:(int)refPointType
+{
+    CGPoint relativePos;
+    CGPoint refPt = [self RefPointFromType:refPointType];
+    
+    relativePos.x = pt.x - refPt.x;
+    relativePos.y = pt.y - refPt.y;
+    
+    return relativePos;
 }
 
 - (void)setPContentSizeW:(float)pContentSizeW
@@ -1975,6 +2097,7 @@
     [self setPBlendFuncSrc:GL_ONE];
     [self setPBlendFuncDst:GL_ONE];
 }
+
 
 #pragma mark Properties MenuItem
 

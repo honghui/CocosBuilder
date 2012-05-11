@@ -74,6 +74,7 @@
 
 @synthesize rotation = rotation_, scaleX = scaleX_, scaleY = scaleY_;
 @synthesize position = position_, positionInPixels = positionInPixels_;
+@synthesize refPointType = refPointType_, positionRelative = positionRelative_;
 @synthesize anchorPoint = anchorPoint_, anchorPointInPixels = anchorPointInPixels_;
 @synthesize contentSize = contentSize_, contentSizeInPixels = contentSizeInPixels_;
 @synthesize isRelativeAnchorPoint = isRelativeAnchorPoint_;
@@ -243,6 +244,7 @@
 		anchorPointInPixels_ = anchorPoint_ = CGPointZero;
 		contentSizeInPixels_ = contentSize_ = CGSizeZero;
 		
+        refPointType_ = kBottomLeft;
 		
 		// "whole screen" objects. like Scenes and Layers, should set isRelativeAnchorPoint to NO
 		isRelativeAnchorPoint_ = YES; 
