@@ -105,6 +105,10 @@
 {
     node.position = [CCBReader pointValFromDict:props forKey:@"position"];
     
+    // walzer add
+    node.refPointType = [CCBReader intValFromDict:props forKey:@"refPointType"];
+    node.positionRelative = [CCBReader pointValFromDict:props forKey:@"positionRelative"];
+    
     if (![node isKindOfClass:[CCSprite class]] &&
         ![node isKindOfClass:[CCMenuItemImage class]] &&
         ![node isKindOfClass:[CCLabelBMFont class]])
