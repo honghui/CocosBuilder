@@ -107,6 +107,10 @@
     
     // walzer add
     node.refPointType = [CCBReader intValFromDict:props forKey:@"refPointType"];
+    if (node.refPointType == kInvalidRelativePoisition)
+    {
+        node.refPointType = kBottomLeft;
+    }
     node.positionRelative = [CCBReader pointValFromDict:props forKey:@"positionRelative"];
     
     if (![node isKindOfClass:[CCSprite class]] &&

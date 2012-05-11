@@ -38,15 +38,16 @@ enum {
 };
 
 enum {
-    kBottomLeft = 0,
-    kBottom = 1 ,
-    kBottomRight = 2,
-    kCenterLeft = 3,
-    kCenter = 4,
-    kCenterRight = 5,
-    kTopLeft = 6,
-    kTop = 7,
-    kTopRight = 8,
+    kInvalidRelativePoisition = 0,
+    kBottomLeft = 1,
+    kBottom = 2,
+    kBottomRight = 3,
+    kCenterLeft = 4,
+    kCenter = 5,
+    kCenterRight = 6,
+    kTopLeft = 7,
+    kTop = 8,
+    kTopRight = 9,
 } ;
 
 @class CCCamera;
