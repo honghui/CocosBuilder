@@ -110,8 +110,12 @@
     if (node.refPointType == kInvalidRelativePoisition)
     {
         node.refPointType = kBottomLeft;
+        node.positionRelative = node.position;
     }
-    node.positionRelative = [CCBReader pointValFromDict:props forKey:@"positionRelative"];
+    else 
+    {
+        node.positionRelative = [CCBReader pointValFromDict:props forKey:@"positionRelative"];
+    }
     
     if (![node isKindOfClass:[CCSprite class]] &&
         ![node isKindOfClass:[CCMenuItemImage class]] &&
